@@ -15,4 +15,8 @@ import { CalculatorButtonComponent } from "../calculator-button/calculator-butto
 })
 export class CalculatorComponent {
 
+  handlerClick( key: string ) {
+    console.log({ key });
+  }
+
 }

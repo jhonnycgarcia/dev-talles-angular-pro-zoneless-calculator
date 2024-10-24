@@ -1,4 +1,15 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, HostBinding, input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  input,
+  OnInit,
+  output,
+  viewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
   selector: 'calculator-button',
@@ -13,6 +24,9 @@ import { booleanAttribute, ChangeDetectionStrategy, Component, HostBinding, inpu
   // encapsulation: ViewEncapsulation.None
 })
 export class CalculatorButtonComponent implements OnInit {
+
+  public onClick = output<string>();
+  public contentValue = viewChild<ElementRef<HTMLButtonElement>>('button');
 
   public isCommand = input(false,  {
     // transform: booleanAttribute,
@@ -35,6 +49,12 @@ export class CalculatorButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log({ isCommand: this.isCommand() });
+    // console.log({ isCommand: this.isCommand() });
+  }
+
+  handlerClick(){
+    if(!this.contentValue()?.nativeElement) { return; }
+    const value = this.contentValue()!.nativeElement.innerText;
+    this.onClick.emit(value.trim());
   }
 }
