@@ -7,6 +7,7 @@ import {
   input,
   OnInit,
   output,
+  signal,
   viewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -24,6 +25,8 @@ import {
   // encapsulation: ViewEncapsulation.None
 })
 export class CalculatorButtonComponent implements OnInit {
+
+  public isPressed = signal(false);
 
   public onClick = output<string>();
   public contentValue = viewChild<ElementRef<HTMLButtonElement>>('button');
@@ -57,4 +60,19 @@ export class CalculatorButtonComponent implements OnInit {
     const value = this.contentValue()!.nativeElement.innerText;
     this.onClick.emit(value.trim());
   }
+
+  public keyboardPressedStyle(key: string) {
+    if(!this.contentValue()) { return; }
+
+    const value = this.contentValue()!.nativeElement.innerText;
+
+    if(value !== key) { return; }
+
+    this.isPressed.set(true);
+
+    setTimeout(() => {
+      this.isPressed.set(false);
+    }, 100);
+  }
+
 }

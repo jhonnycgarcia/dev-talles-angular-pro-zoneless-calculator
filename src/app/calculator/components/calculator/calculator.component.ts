@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { CalculatorButtonComponent } from "../calculator-button/calculator-button.component";
 
 @Component({
@@ -12,11 +12,19 @@ import { CalculatorButtonComponent } from "../calculator-button/calculator-butto
   //   //   @apply bg-indigo-700 bg-opacity-20 hover:bg-opacity-20;
   //   // }
   // `
+  host: {
+    '(document:keyup)': 'handlerKeybordEvent($event)'
+  }
 })
 export class CalculatorComponent {
 
-  handlerClick( key: string ) {
+  handlerClick( key: string ): void {
     console.log({ key });
+  }
+
+  // @HostListener('document:keyup', ['$event'])
+  handlerKeybordEvent(event: KeyboardEvent): void {
+    this.handlerClick(event.key);
   }
 
 }

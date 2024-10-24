@@ -28,3 +28,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 `https://www.creative-tim.com/twcomponents/component/calculator-ui`
 `https://angular.dev/guide/components/styling#ng-deep`
+`https://angular.dev/guide/components/host-elements#the-hostbinding-and-hostlistener-decorators`
