@@ -18,12 +18,12 @@ export class CalculatorService {
 
     // Válidar el input
     if(![...number, ...operators, ...especialOperators].includes(value)) {
-      console.log('invalid input:', value);
+      // console.log('invalid input:', value);
     }
 
     // =
     if(value === '=') {
-      console.log('Calcular resultado');
+      // console.log('Calcular resultado');
       this.calculateResult();
       return;
     }
@@ -70,7 +70,7 @@ export class CalculatorService {
 
     // Limitar número de caracteres
     if(this.resultText().length >= 10) {
-      console.log('max length reached');
+      // console.log('max length reached');
       return;
     }
 
