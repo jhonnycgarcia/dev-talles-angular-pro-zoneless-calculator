@@ -118,4 +118,33 @@ describe('CalculatorService', () => {
     expect(service.resultText()).toBe('0.0');
   });
 
+  it('should handler sign change correctly', () => {
+    service.constructNumber('1');
+    service.constructNumber('+/-');
+    expect(service.resultText()).toBe('-1');
+    service.constructNumber('+/-');
+    expect(service.resultText()).toBe('1');
+  });
+
+  it('should handler backspace correctly', () => {
+    service.resultText.set('123');
+    service.constructNumber('Backspace');
+    expect(service.resultText()).toBe('12');
+    service.constructNumber('Backspace');
+    expect(service.resultText()).toBe('1');
+    service.constructNumber('Backspace');
+    expect(service.resultText()).toBe('0');
+  });
+
+  it('should handler max length correctly', () => {
+
+    for (let index = 0; index < 10; index++) {
+      service.constructNumber('1');
+    }
+    expect(service.resultText().length).toBe(10);
+
+    service.constructNumber('2');
+    expect(service.resultText().length).toBe(10);
+  });
+
 });
