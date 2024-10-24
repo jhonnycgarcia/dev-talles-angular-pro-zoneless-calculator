@@ -27,7 +27,8 @@ export class CalculatorComponent {
   public lastOperator = computed(() => this.calculatorSrv.lastOperator());
 
   handlerClick( key: string ): void {
-    console.log({ key });
+    // console.log({ key });
+    this.calculatorSrv.constructNumber(key);
   }
 
   // @HostListener('document:keyup', ['$event'])

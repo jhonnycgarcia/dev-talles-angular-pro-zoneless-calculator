@@ -9,11 +9,12 @@ const especialOperators = ['÷', '⨉', '%', '+/-', 'C', 'Backspace', '='];
 })
 export class CalculatorService {
 
-  public resultText = signal('1234.56');
+  public resultText = signal('0');
   public subResultText = signal('0');
   public lastOperator = signal('+');
 
   public constructNumber(value: string): void{
+    console.log({ value })
 
     // Válidar el input
     if(![...number, ...operators, ...especialOperators].includes(value)) {
@@ -45,7 +46,7 @@ export class CalculatorService {
         return;
       }
 
-      this.resultText.update((prev) => value.slice(0, -1) );
+      this.resultText.update((prev) => prev.slice(0, -1) );
       return;
     }
 
@@ -57,18 +58,59 @@ export class CalculatorService {
       return;
     }
 
+    // Limitar número de caracteres
+    if(value.length >= 10) {
+      console.log('max length reached');
+      return;
+    }
+
     // Válidar punto decimal
     if(value === '.' && !this.resultText().includes('.')) {
 
       if(this.resultText() === '0' || this.resultText() === ''){
-        this.resultText.update((prev) => prev + `0.`);
+        this.resultText.set(`0.`);
+        return;
       }
 
       this.resultText.update((prev) => prev + `.`);
       return;
     }
 
-    this.resultText.update((prev) =>  prev + value);
+    // Manejo de el cero inicial
+    if(value === '0'
+      && (this.resultText() === '0' || this.resultText() === '-0')
+    ) {
+      return;
+    }
+
+    // Cambiar signo
+    if(value == '+/-'){
+      if(this.resultText().includes('-')) {
+        this.resultText.update((prev) => prev.replace('-', ''));
+        return;
+      }
+
+      this.resultText.update((prev) => `-${prev}`);
+      return;
+    }
+
+    // Número
+    if(number.includes(value)) {
+
+      if(this.resultText() === '0') {
+        this.resultText.set(value);
+        return;
+      }
+
+      if(this.resultText() === '-0') {
+        this.resultText.set(`-${value}`);
+        return;
+      }
+
+      this.resultText.update((prev) =>  prev + value);
+      return;
+    }
+
   }
 
 }
