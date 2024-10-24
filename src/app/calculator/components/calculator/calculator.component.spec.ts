@@ -18,6 +18,7 @@ describe('CalculatorComponent', () => {
   let fixture: ComponentFixture<CalculatorComponent>;
   let compiled: HTMLElement;
   let component: CalculatorComponent;
+  let mockCalculatorService: MockCalculatorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,19 +29,33 @@ describe('CalculatorComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(CalculatorComponent);
-    compiled = fixture.nativeElement  as HTMLElement;
+    compiled = fixture.nativeElement as HTMLElement;
     component = fixture.componentInstance;
-
-    fixture.detectChanges();
+    mockCalculatorService = TestBed.inject(CalculatorService) as unknown as MockCalculatorService;
   });
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
   });
+
   it('should have initial values', () => {
     expect(component.resultText()).toBe('100.00');
     expect(component.subResultText()).toBe('20');
     expect(component.lastOperator()).toBe('-');
+  });
+
+  it('should display calculation result', () => {
+    mockCalculatorService.resultText.and.returnValue('123');
+    mockCalculatorService.subResultText.and.returnValue('456');
+    mockCalculatorService.lastOperator.and.returnValue('*');
+
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('span')?.innerText).toBe('456 *');
+
+    expect(component.resultText()).toBe('123');
+    expect(component.subResultText()).toBe('456');
+    expect(component.lastOperator()).toBe('*');
   });
 
 });
