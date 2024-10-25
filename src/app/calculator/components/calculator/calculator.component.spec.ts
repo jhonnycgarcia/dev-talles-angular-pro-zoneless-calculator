@@ -78,4 +78,26 @@ describe('CalculatorComponent', () => {
     expect(buttons[3].textContent?.trim()).toBe('÷');
   });
 
+  it('should hanlder keyboard event correctly', () => {
+    const eventEnter = new KeyboardEvent('keyup', { key: 'Enter' });
+    document.dispatchEvent(eventEnter);
+
+    expect(mockCalculatorService.constructNumber).toHaveBeenCalled();
+    expect(mockCalculatorService.constructNumber).toHaveBeenCalledWith('=');
+
+    const eventEsc = new KeyboardEvent('keyup', { key: 'Escape' });
+    document.dispatchEvent(eventEsc);
+
+    expect(mockCalculatorService.constructNumber).toHaveBeenCalled();
+    expect(mockCalculatorService.constructNumber).toHaveBeenCalledWith('C');
+  });
+
+  it('should display resutText correctly', () => {
+    mockCalculatorService.resultText.and.returnValue('123');
+    mockCalculatorService.subResultText.and.returnValue('10 +');
+    fixture.detectChanges();
+    expect(component.resultText()).toBe('123');
+    expect(compiled.querySelector('#sub-result')?.textContent).toContain('10 +');
+  });
+
 });
